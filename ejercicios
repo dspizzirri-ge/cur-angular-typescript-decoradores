@@ -1,0 +1,8 @@
+Decorador de clase
+1. Crear un decorador que sirva para loguear cuando una clase sea ha instanciado.
+
+Decorador metodo
+1. Crear un decorador que altere la cantidad de veces que se ejecuta un metodo
+
+Decorador de propiedad
+1. Crear un decorador que modifique un atributo de la clase cada vez que se le setea un valor nuevo valor.

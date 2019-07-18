@@ -37,7 +37,7 @@ function template(template: string): Function {
 
 function repetir(iteraciones?: number): Function {
 
-    return function (target: any, key: string, descriptor: PropertyDescriptor) {
+    return function (target: Object, key: string, descriptor: PropertyDescriptor) {
 
         const original: Function = descriptor.value;
 
