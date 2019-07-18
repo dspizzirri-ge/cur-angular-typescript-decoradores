@@ -7,9 +7,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 function repetir(iteraciones) {
     return function (target, key, descriptor) {
+        const original = descriptor.value;
         if (iteraciones && descriptor.writable) {
-            for (let i = 0; i < iteraciones; i++)
-                descriptor.value();
+            descriptor.value = function () {
+                let context = this;
+                let args = arguments;
+                for (let i = 0; i < iteraciones; i++)
+                    original.apply(context, args);
+            };
         }
     };
 }
@@ -19,14 +24,14 @@ class Mensajes {
         this.texto = texto;
     }
     enviar() {
-        console.log(`Enviando "${this.texto}" a ${this.destinatario}`);
+        console.log(this.destinatario);
         const interval = setInterval(() => console.log("..."), 500);
         setTimeout(() => { console.log("Mensajes enviado"); clearInterval(interval); }, 2000);
         return true;
     }
 }
 __decorate([
-    repetir(1).bind(this)
+    repetir(2)
 ], Mensajes.prototype, "enviar", null);
 const mensaje = new Mensajes("+541134456", "Chau, nos vemos");
 mensaje.enviar();

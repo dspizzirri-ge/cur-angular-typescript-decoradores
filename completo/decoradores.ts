@@ -39,9 +39,16 @@ function repetir(iteraciones?: number): Function {
 
     return function (target: any, key: string, descriptor: PropertyDescriptor) {
 
+        const original: Function = descriptor.value;
+
         if (iteraciones && descriptor.writable) {
-            for (let i = 0; i < iteraciones; i++) {
-                descriptor.value();
+            descriptor.value = function () {
+
+                let context: PropertyDescriptor = this;
+                let args: IArguments = arguments;
+
+                for (let i = 0; i < iteraciones; i++)
+                    original.apply(context, args);
             }
         }
     }
@@ -76,7 +83,7 @@ class Mensajes {
         this.texto = texto;
     }
 
-    @repetir(1)
+    @repetir(2)
     enviar(@logger segundosDemora: number): boolean {
         const milisegundos = segundosDemora * 1000;
 

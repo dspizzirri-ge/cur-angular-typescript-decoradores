@@ -37,10 +37,14 @@ function template(template) {
 }
 function repetir(iteraciones) {
     return function (target, key, descriptor) {
+        const original = descriptor.value;
         if (iteraciones && descriptor.writable) {
-            for (let i = 0; i < iteraciones; i++) {
-                descriptor.value();
-            }
+            descriptor.value = function () {
+                let context = this;
+                let args = arguments;
+                for (let i = 0; i < iteraciones; i++)
+                    original.apply(context, args);
+            };
         }
     };
 }
@@ -75,7 +79,7 @@ __decorate([
     template("A quien corresponda, &. Besos")
 ], Mensajes.prototype, "texto", void 0);
 __decorate([
-    repetir(1),
+    repetir(2),
     __param(0, logger)
 ], Mensajes.prototype, "enviar", null);
 Mensajes = __decorate([
